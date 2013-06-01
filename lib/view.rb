@@ -1,6 +1,6 @@
 class View
 
-  def display output
+  def notify output
     puts output
   end
 

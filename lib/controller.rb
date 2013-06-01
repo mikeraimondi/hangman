@@ -34,13 +34,19 @@ class Controller
           end
         end
       end
-
-
-      @view.display @game.player_count
+      take_turns
     rescue GameError
       @view.error "Oops, you broke it"
       setup_game
     end
   end
+
+  def take_turns
+    while @game.in_progress
+      @view.prompt "#{@game.player_turn.name}, guess a letter, or enter ! to solve the puzzle:"
+      @game.take_turn
+    end
+  end
+
 
 end
