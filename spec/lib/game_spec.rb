@@ -95,7 +95,7 @@ describe Game do
     end
 
     it "has a turn order" do
-      expect(game.player_turn).to be_an_instance_of(Player)
+      expect(game.player_turn).to be_a(Player)
     end
 
     it "has a turn order that progresses" do
@@ -123,6 +123,10 @@ describe Game do
       expect(different).to be_true
     end
 
+  end
+
+  it "has a word" do
+    expect(game.word.secret).to be_a(String)
   end
 
 

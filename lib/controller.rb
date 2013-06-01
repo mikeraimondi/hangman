@@ -34,6 +34,7 @@ class Controller
           end
         end
       end
+      @view.start_game
       take_turns
     rescue GameError
       @view.error "Oops, you broke it"
@@ -43,6 +44,7 @@ class Controller
 
   def take_turns
     while @game.in_progress
+      @view.notify(@game.word.display)
       @view.prompt "#{@game.player_turn.name}, guess a letter, or enter ! to solve the puzzle:"
       @game.take_turn
     end

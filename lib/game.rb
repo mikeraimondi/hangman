@@ -1,4 +1,5 @@
 require_relative 'player'
+require_relative 'word'
 
 class PlayerCountError < StandardError
 end
@@ -13,12 +14,13 @@ class GameError < StandardError
 end
 
 class Game
-  attr_reader :players, :player_count, :in_progress
+  attr_reader :players, :player_count, :in_progress, :word
 
   def initialize
     @players = []
     @current_turn = 0
     @in_progress = true
+    @word = Word.new
   end
 
   def set_number_of_players count

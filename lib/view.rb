@@ -21,4 +21,8 @@ class View
     prompt "What is player #{num}'s name?"
   end
 
+  def start_game
+    puts "Ok! Let's play!"
+  end
+
 end
