@@ -3,6 +3,15 @@ require_relative 'player'
 class PlayerCountError < StandardError
 end
 
+class PlayerNameError < StandardError
+end
+
+class PlayerNameDuplicateError < StandardError
+end
+
+class GameError < StandardError
+end
+
 class Game
   attr_reader :players, :player_count
 
@@ -18,7 +27,16 @@ class Game
   end
 
   def add_player name
+    raise GameError if @player_count.nil? || @players.count >= @player_count
+    raise PlayerNameError if name.strip.empty?
+    names = []
+    @players.each {|player| names << player.name}
+    raise PlayerNameDuplicateError if names.include? name
     @players << Player.new(name)
+  end
+
+  def start
+    raise PlayerNameError if @players.count < @player_count
   end
 
 end

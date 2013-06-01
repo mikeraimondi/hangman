@@ -17,4 +17,8 @@ class View
     prompt "How many players? (1-5)"
   end
 
+  def prompt_for_player_name num
+    prompt "What is player #{num}'s name?"
+  end
+
 end

@@ -2,5 +2,4 @@
 
 require_relative 'lib/controller'
 
-c = Controller.new
-c.start_game
+Controller.new
