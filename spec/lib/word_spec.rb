@@ -2,12 +2,13 @@ require 'rspec'
 require_relative '../../lib/word'
 
 describe Word do
+
+  let(:word) { Word.new }
   # As a hangman player
   # I want to be presented with a number of characters representing a random word
   # So that I can guess what that word is
   describe "when blanked out" do
 
-    let(:word) { Word.new }
     # A random word is selected from the dictionary of words
     it "is a word" do
       expect(word.secret).to be_a(String)
@@ -23,6 +24,56 @@ describe Word do
       blanks = ""
       word.secret.length.times { blanks << "_" }
       expect(word.display).to eql(blanks)
+    end
+
+  end
+
+  # As a hangman player
+  # I want to guess a letter
+  # So that I can get closer to guessing the word
+  describe "when guessing a letter" do
+    before(:each) { word.test_override "OREO" }
+
+    # If I guess a letter that is contained in the word, all occurrences of the letter is filled in
+    it "fills in all occurrences of the guessed letter" do
+      word.guess "o"
+      expect(word.display).to eql("O__O")
+    end
+
+    # If I guess a letter that is not contained in the word, I am told that the letter is not found in the word
+    it "returns a message that the letter is not found if the guess is wrong" do
+      result = word.guess "q"
+      expect(result[:message]).to eql("Sorry, we did not find Q!")
+    end
+
+    # If I guess a letter that has already been guessed, I am told it has already been guessed and that I must enter a new letter
+    it "returns a message that the letter has already been guessed if a successful guess is duplicated" do
+      word.guess "r"
+      result = word.guess "r"
+      expect(result[:message]).to eql("R has already been played, silly!")
+    end
+
+    it "returns a message that the letter has already been guessed if an unsuccessful guess is duplicated" do
+      word.guess "f"
+      result = word.guess "f"
+      expect(result[:message]).to eql("F has already been played, silly!")
+    end
+
+    # It should be case insensitive, meaning there should be no difference in behavior if I specify an 'A' or an 'a'
+    it "is case insensitive" do
+      word.guess "O"
+      expect(word.display).to eql("O__O")
+      result = word.guess "Q"
+      expect(result[:message]).to eql("Sorry, we did not find Q!")
+      word.guess "R"
+      result = word.guess "R"
+      expect(result[:message]).to eql("R has already been played, silly!")
+    end
+
+    it "raises an error if the input is invalid" do
+      expect( lambda{word.guess ""} ).to raise_error(InvalidGuessError)
+      expect( lambda{word.guess " "} ).to raise_error(InvalidGuessError)
+      expect( lambda{word.guess "blah"} ).to raise_error(InvalidGuessError)
     end
 
   end

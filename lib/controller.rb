@@ -43,10 +43,26 @@ class Controller
   end
 
   def take_turns
-    while @game.in_progress
-      @view.notify(@game.word.display)
-      @view.prompt "#{@game.player_turn.name}, guess a letter, or enter ! to solve the puzzle:"
-      @game.take_turn
+    begin
+      while @game.in_progress
+        advance = false
+        while !advance 
+          @view.notify(@game.word.display)
+          player_guess = @view.prompt "#{@game.player_turn.name}, guess a letter, or enter ! to solve the puzzle:"
+          begin
+            response = @game.word.guess(player_guess)
+            advance = response[:advance]
+            @view.notify(response[:message])
+          rescue InvalidGuessError
+            @view.error "Please enter one letter"
+          end
+        end
+        @game.take_turn
+        @view.notify("***")
+      end
+    rescue GameError
+      @view.error "Oops, you broke it"
+      setup_game
     end
   end
 
