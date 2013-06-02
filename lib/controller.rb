@@ -49,22 +49,34 @@ class Controller
         while !advance 
           @view.notify(@game.word.display)
           player_guess = @view.prompt "#{@game.player_turn.name}, guess a letter, or enter ! to solve the puzzle:"
-          begin
-            response = @game.word.guess(player_guess)
-            advance = response[:advance]
-            @view.notify(response[:message])
-          rescue InvalidGuessError
-            @view.error "Please enter one letter"
+          if player_guess == "!"
+            begin
+              word_guess = @view.prompt "What is your guess?"
+              response = @game.word.guess_word(word_guess)
+              @game.in_progress = false if response[:win]
+              advance = response[:advance]
+              @view.notify(response[:message])
+            rescue InvalidGuessError
+              @view.error "Please enter a guess"
+            end
+          else
+            begin
+              response = @game.word.guess(player_guess)
+              advance = response[:advance]
+              @view.notify(response[:message])
+            rescue InvalidGuessError
+              @view.error "Please enter one letter"
+            end
           end
         end
         @game.take_turn
         @view.notify("***")
       end
+      @view.notify "#{@game.player_turn.name} wins! Congratulations!"
     rescue GameError
       @view.error "Oops, you broke it"
       setup_game
     end
   end
-
 
 end

@@ -7,8 +7,8 @@ class Word
   def initialize
     corpus = []
     path = File.expand_path('../../Words/Words/en.txt', __FILE__)
-    File.open(path).each_line { |line| corpus << line.chomp.upcase }
-    @secret = corpus.sample
+    File.open(path).each_line { |line| corpus << line.chomp }
+    @secret = corpus.sample.upcase
     @guessed = [] 
     @secret.length.times { @guessed << false}
     @guesses = []
@@ -47,6 +47,12 @@ class Word
       end
     end
     {advance: true, message: "Sorry, we did not find #{letter}!"}
+  end
+
+  def guess_word word
+    raise InvalidGuessError if word.strip.empty?
+    word = word.upcase
+    word == @secret ? {advance: true, win: true} : {advance: true, message: "Nope, sorry!"}
   end
 
   def reveal_all letter

@@ -14,7 +14,8 @@ class GameError < StandardError
 end
 
 class Game
-  attr_reader :players, :player_count, :in_progress, :word
+  attr_reader :players, :player_count, :word
+  attr_accessor :in_progress
 
   def initialize
     @players = []
@@ -52,7 +53,9 @@ class Game
 
   def take_turn
     raise PlayerNameError if @players.count < @player_count
-    @current_turn >= @players.count - 1 ? @current_turn = 0 : @current_turn += 1
+    if @in_progress
+      @current_turn >= @players.count - 1 ? @current_turn = 0 : @current_turn += 1
+    end
   end
 
 end

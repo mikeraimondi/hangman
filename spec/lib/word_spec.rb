@@ -78,4 +78,28 @@ describe Word do
 
   end
 
+  # I can guess the word by typing ! when prompted to guess a letter
+  # If I guess the word correctly, I have won the game
+  # If I guess the word incorrectly, I lose my turn
+  describe "when guessing the word" do
+    before(:each) { word.test_override "OREO" }
+
+    # I can guess the word by typing ! when prompted to guess a letter
+    # If I guess the word correctly, I have won the game
+    it "it returns a win condition on a correct word guess" do
+      expect(word.guess_word("OREO")).to eql({win: true})
+    end
+
+    # If I guess the word incorrectly, I lose my turn 
+    it "it returns an advance turn condition on an incorrect word guess" do
+      expect(word.guess_word("NOTOREO")).to eql({advance: true, message: "Nope, sorry!"})
+    end
+
+    it "it raises an error on a blank word guess" do
+      expect( lambda {word.guess_word("")} ).to raise_error(InvalidGuessError)
+    end
+  end
+
+
+
 end
