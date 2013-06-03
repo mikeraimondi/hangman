@@ -39,6 +39,7 @@ class Game
   end
 
   def add_player name
+    #TODO fix this player_count.nil
     raise GameError if @player_count.nil? || @players.count >= @player_count
     raise PlayerNameError if name.strip.empty?
     names = []
@@ -47,6 +48,7 @@ class Game
     @players << Player.new(name)
   end
 
+  #TODO CHANGE NAME
   def player_turn
     @players[@current_turn]
   end

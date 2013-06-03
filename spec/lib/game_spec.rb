@@ -106,6 +106,7 @@ describe Game do
       expect(game.player_turn).to eql(first_turn_player)
     end
 
+    # TODO low value, reconsider
     # It is random what user plays when
     it "has a random initial turn" do
       initial_player = game.player_turn
@@ -124,12 +125,5 @@ describe Game do
     end
 
   end
-
-  it "has a word" do
-    expect(game.word.secret).to be_a(String)
-  end
-
-
-
 
 end

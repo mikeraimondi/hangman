@@ -14,6 +14,7 @@ describe Word do
       expect(word.secret).to be_a(String)
     end
 
+    #TODO low value, refactor
     it "is a random word" do
       other_word = Word.new
       expect(word.secret).to_not eql(other_word.secret)
@@ -87,7 +88,7 @@ describe Word do
     # I can guess the word by typing ! when prompted to guess a letter
     # If I guess the word correctly, I have won the game
     it "it returns a win condition on a correct word guess" do
-      expect(word.guess_word("OREO")).to eql({win: true})
+      expect(word.guess_word("OREO")).to include({win: true})
     end
 
     # If I guess the word incorrectly, I lose my turn 

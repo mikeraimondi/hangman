@@ -26,6 +26,7 @@ class Word
     displayed_word
   end
 
+  #TODO poorly named method. should be something like 'puzzle.submit_guess'
   def guess letter
     raise InvalidGuessError if letter.strip.empty? || letter.length > 1
     letter = letter[0].upcase

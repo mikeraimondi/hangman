@@ -10,11 +10,12 @@ class Controller
     setup_game
   end
 
+  #TODO break up method
   def setup_game
     begin
       while @game.player_count.nil?
+        player_count = @view.prompt_for_player_count
         begin
-          player_count = @view.prompt_for_player_count
           @game.set_number_of_players(player_count)
         rescue PlayerCountError
           @view.error "Please enter an integer between 1 and 5"
@@ -24,8 +25,8 @@ class Controller
       @game.player_count.times do |player_num|
         prev_count = @game.players.count
         while prev_count == @game.players.count
+          player = @view.prompt_for_player_name(player_num + 1)
           begin
-            player = @view.prompt_for_player_name(player_num + 1)
             @game.add_player(player)
           rescue PlayerNameError
             @view.error "Please enter a name"
